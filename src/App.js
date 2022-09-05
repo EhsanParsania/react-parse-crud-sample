@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Home from './routes/Home';
 import Auth from './routes/Auth';
+import SlProjectMock from './routes/mockSlProject';
 
 export default function App() {
 
@@ -13,13 +14,16 @@ export default function App() {
   return (
     <Router>
       <Switch>
-          <Route path="/auth">
-            <Auth />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
+        <Route path="/auth">
+          <Auth />
+        </Route>
+        <Route path="/sl">
+          <SlProjectMock />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
     </Router>
   );
 }

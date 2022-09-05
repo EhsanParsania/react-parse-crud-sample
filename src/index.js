@@ -7,9 +7,9 @@ import { initializeParse } from '@parse/react';
 
 // my own parse initialization (parse project id and key)
 initializeParse(
-  'https://parseapi.back4app.com',
-  'nnpcyABR57hYGfg2B4EiJgImtgB18CF1kF3gGk0J',
-  'OAvDSFwTiOqMObGY98zWqQgKx14vIz9LYs4mh0MD'
+  process.env.REACT_APP_PARSE_SERVER_URL,
+  process.env.REACT_APP_PARSE_APP_ID,
+  process.env.REACT_APP_PARSE_JAVASCRIPT_KEY
 );
 
 ReactDOM.render(
