@@ -18,7 +18,7 @@ const Auth = () => {
     user.set('password', password);
 
     user.logIn().then((user) => {
-      history.push('/')
+      history.push('/sl')
     }).catch(err => {      
       alert(err.message);
     });
