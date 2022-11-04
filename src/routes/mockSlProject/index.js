@@ -12,10 +12,10 @@ function SlProjectMock() {
 
   const createNewRepositoryTable = async () => {
     const result = await Parse.Cloud.run('create-new-project-data-table', {
-      name: 'table number 2',
+      name: 'table number october 21-2',
       fields: [
-        { productTitle: "text" },
-        { rating: "rating" },
+        { id: 'productTitle', name: "product", type: 'text' },
+        { id: 'rating', name: "ratingoo", type: 'rating' },
       ]
     })
     console.log(result)
@@ -34,10 +34,10 @@ function SlProjectMock() {
 
   const createNewProjectRow = async () => {
     const result = await Parse.Cloud.run('create-new-project-data-row', {
-      tableId: 'T724g7UVrLXhUQg',
+      tableId: 'd9rGmSzuNEMYHWK',
       data: {
-        productTitle: "xbox 10",
-        rating: 1,
+        productTitle: "october 21-2",
+        rating: 2,
       },
 
     })
@@ -141,13 +141,15 @@ function SlProjectMock() {
   }
 
   const getTree = async () => {
-    const result = await Parse.Cloud.run('get-project-page-tree', { pageId: '0rU7sPPdv25vP5V' })
+    const result = await Parse.Cloud.run('get-project-page-tree', { pageId: '1E8cxuGg5konmGB' })
     console.log(result)
   }
 
+  // ============================================= CREATE PROJECT PAGE =============================================
+
   const createNewPage = async () => {
     const projectPage = new ProjectPage()
-    const project = Project.createWithoutData('IYeEVHkwhD9fm9P')
+    const project = Project.createWithoutData('oLTgduuvCbdiuEb')
     await projectPage.save({
       project: project,
       name: 'page 1',
@@ -156,28 +158,222 @@ function SlProjectMock() {
 
   const createNewPageStrip = async () => {
     const projectPageStrip = new ProjectPageStrip()
-    const projectPage = ProjectPage.createWithoutData('0rU7sPPdv25vP5V')
+    const projectPage = ProjectPage.createWithoutData('DYJfkZwhdWPD6Gb')
     await projectPageStrip.save({
+      // parents: [{ projectPage, order: 1 }],
       projectPage: projectPage,
-      name: 'strip 1',
+      name: 'strip 6',
+      order: 1,
     })
   }
+
+  const reUseProjectPageStrip = async () => {
+    const result = await Parse.Cloud.run('re-use-project-page-strip', {
+      stripId: 'Vv0XXguBezF1ab7',
+      newProjectPageParentId: 'DYJfkZwhdWPD6Gb',
+      newOrder: 2
+    })
+    console.log(result)
+  }
+
+  const updateStrip = async () => {
+    const projectPageStrip = ProjectPageStrip.createWithoutData('3JMe2CANjAUEhKB')
+    await projectPageStrip.save({
+      saved: false,
+    })
+  }
+  const deleteProjectPageStripFromOneParent = async () => {
+    const result = await Parse.Cloud.run('delete-project-page-strip', {
+      stripId: '3JMe2CANjAUEhKB',
+      projectPageParentId: 'DYJfkZwhdWPD6Gb',
+      // order: 1,
+    })
+    console.log(result)
+  }
+
 
   const createNewPageStripComponent = async () => {
     const projectPageStripComponent = new ProjectPageStripComponent()
-    const projectPageStrip = ProjectPageStrip.createWithoutData('mvpNqB8uzZjfyn8')
-    // const projectPageStripComponent2 = ProjectPageStripComponent.createWithoutData('IJeOASgGvJc0Pxt')
+    const projectPageStrip = ProjectPageStrip.createWithoutData('UOElPXOa7CsunFf')
+    // const projectPageStripComponent2 = ProjectPageStripComponent.createWithoutData('Xn5j7xJNPrstB0I')
 
     await projectPageStripComponent.save({
-      projectPageStrip: projectPageStrip,
-      name: 'component 1',
+      projectPageStrip: { parent1: projectPageStrip, order1: 1 },
+      name: 'component with strip parent',
       // projectPageStripComponent: projectPageStripComponent2
     })
   }
+  // { projectPage: parse pointer, order: 1 },
+
+  const updateComponent = async () => {
+    const projectPageStripComponent = ProjectPageStripComponent.createWithoutData('238mO7BROAh3G9r')
+    // const parent = ProjectPageStripComponent.createWithoutData('Xn5j7xJNPrstB0I')
+    const projectPageStrip = ProjectPageStrip.createWithoutData('UOElPXOa7CsunFf')
+    await projectPageStripComponent.save({
+      // projectPageStripComponent: parent,
+      projectPageStrip: projectPageStrip,
+
+    })
+  }
+
+  const createNewPageStripComponentWithChildren = async () => {
+    const projectPage = new ProjectPage()
+    const page = await projectPage.save({
+      name: 'page 1',
+      project: Project.createWithoutData('oLTgduuvCbdiuEb'),
+      order: 3,
+    })
+
+
+    const projectPageStrip = new ProjectPageStrip()
+    const strip = await projectPageStrip.save({
+      name: 'front 1',
+      parents: [{ projectPage: page, order: 1 }],
+      // newStripOrder: 1
+    })
+
+    const projectPageStripComponent = new ProjectPageStripComponent()
+
+    // const projectPageStrip = ProjectPageStrip.createWithoutData('bLjsPaegQSjZ8ag')
+    // const projectPageStripComponent2 = ProjectPageStripComponent.createWithoutData('Xn5j7xJNPrstB0I')
+
+    const res1 = await projectPageStripComponent.save({
+      projectPageStrip: strip,
+      name: 'component with strip parent',
+      // projectPageStripComponent: projectPageStripComponent2
+    })
+    // const projectPageStrip = ProjectPageStrip.createWithoutData('RvpSxDtn5ThCjBu')
+    const projectPageStripComponent2 = new ProjectPageStripComponent()
+
+    const res2 = await projectPageStripComponent2.save({
+      name: 'component with component parent 2',
+      projectPageStripComponent: res1
+    })
+    const projectPageStripComponent3 = new ProjectPageStripComponent()
+
+    const res3 = await projectPageStripComponent3.save({
+      name: 'component with component parent 3',
+      projectPageStripComponent: res2
+    })
+
+  }
+
+  const removeComponent = async () => {
+    await Parse.Cloud.run('remove-page-strip-components-tree', { componentId: 'vmxkvKuw72y7Jga' })
+  }
+
+  const removeComponentManually = async () => {
+    const projectPageStripComponent = ProjectPageStripComponent.createWithoutData('StyU14WsqAIMyyv')
+    await projectPageStripComponent.destroy()
+  }
+
+  const removeStrip = async () => {
+    await Parse.Cloud.run('remove-page-strips-tree', { stripId: 'CX730afLom5whRr' })
+  }
+
+  const removeStripManually = async () => {
+    const projectPageStrip = ProjectPageStrip.createWithoutData('StyU14WsqAIMyyv')
+    await projectPageStrip.destroy()
+  }
+
+  const removePage = async () => {
+    await Parse.Cloud.run('remove-project-page-tree', { pageId: '31E4pmgtWT4xv8Q' })
+  }
+
+  const removePageManually = async () => {
+    const projectPage = ProjectPage.createWithoutData('GqoktoCoGh4L2Un')
+    await projectPage.destroy()
+  }
+
+  // ============================================= VARIANT =============================================
+
+  const createNewVariant = async () => {
+    const result = await Parse.Cloud.run('new-project-strip-variant', { stripId: '8TQWurOGwdsAmPD' })
+    console.log(result)
+  }
+
+  const removeVariant = async () => {
+    const result = await Parse.Cloud.run('remove-project-strip-variant', { stripId: 'pl3i4F3B4o0pA3p' })
+    console.log(result)
+  }
+
+  // ============================================= DUPLICATE PAGE =============================================
+
+  const duplicatePage = async () => {
+    const result = await Parse.Cloud.run('clone-project-page-tree', {
+      pageId: 'w4CqM6aNpUIsfJJ',
+      newPageOrder: 5,
+    })
+    console.log(result)
+  }
+
+  const duplicatePageStrip = async () => {
+    const result = await Parse.Cloud.run('clone-page-strips-tree', {
+      stripId: '8TQWurOGwdsAmPD',
+      pageId: '9lxwPQCsewvKPBe',
+      newStripOrder: 1,
+    })
+    console.log(result)
+  }
+
+  const duplicatePageStripComponent = async () => {
+    const result = await Parse.Cloud.run('clone-page-strip-component-tree', {
+      componentId: 'ZhZGl0JISH9xLKh',
+      newComponentOrder: 3
+    })
+    console.log(result)
+  }
+
+
+  const batchChangeIconCategory = async () => {
+    const result = await Parse.Cloud.run('batch-change-icon-category', {
+      // oldCategory: 'test',
+      newCategory: 'new category',
+      iconIDs: ['Rcif5dDFHW', 'UOFUUnN5pC']
+    })
+    console.log(result)
+  }
+
+  const batchDeleteIcon = async () => {
+    const result = await Parse.Cloud.run('batch-delete-icon', {
+      iconIDs: ['Rcif5dDFHW', 'UOFUUnN5pC']
+    })
+    console.log(result)
+  }
+
+  const createIconSet = async () => {
+    const result = await Parse.Cloud.run('create-icon-set', {
+      name: 'fake front',
+    })
+    console.log(result)
+  }
+
+  const test = async () => {
+    const result = await Parse.Cloud.run('test', { projectPageId: 'DYJfkZwhdWPD6Gb' })
+    console.log(result)
+  }
+
+  const getStripById = async () => {
+    const projectPageStrip = ProjectPageStrip.createWithoutData('3JMe2CANjAUEhKB')
+    await projectPageStrip.fetch()
+    console.log(projectPageStrip.get('parents')[0])
+    const parent1 = projectPageStrip.get('parents')[0]
+    const res = await parent1.projectPage.fetch()
+    console.log(res)
+  }
+
+  const test2 = async () => {
+    // const projectPage = ProjectPage.createWithoutData('DYJfkZwhdWPD6Gb')
+    const projectPageStripQuery = new Parse.Query(ProjectPageStrip)
+    projectPageStripQuery.equalTo('parents.projectPage.objectId', 'DYJfkZwhdWPD6Gb')
+    const result = await projectPageStripQuery.find()
+    console.log(result)
+  }
+
 
 
   return (
-    <div className="App">
+    <div className="App" >
       <header className="app-header">
         <img className="logo" alt="back4app's logo" src={'https://blog.back4app.com/wp-content/uploads/2019/05/back4app-white-logo-500px.png'} />
         <h2 className="spacing">parse hooks</h2>
@@ -214,19 +410,57 @@ function SlProjectMock() {
 
         <button style={{ margin: '7px', padding: '5px' }} onClick={getTree}>get page tree</button><br />
 
+        =================================================    PROJECT PAGE      ========================================    <br />
+
         <button style={{ margin: '7px', padding: '5px' }} onClick={createNewPage}>create new page</button><br />
         <button style={{ margin: '7px', padding: '5px' }} onClick={createNewPageStrip}>create new pageStrip</button><br />
         <button style={{ margin: '7px', padding: '5px' }} onClick={createNewPageStripComponent}>create new pageStripComponent</button><br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={createNewPageStripComponentWithChildren}>create new pageStripComponent with children</button><br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={updateComponent}>update component</button><br />
+
+        <button style={{ margin: '7px', padding: '5px', background: 'red' }} onClick={removeComponent}>remove component</button><br />
+        <button style={{ margin: '7px', padding: '5px', background: 'red' }} onClick={removeComponentManually}>remove component manually</button><br />
+        <button style={{ margin: '7px', padding: '5px', background: 'red' }} onClick={removeStrip}>remove strip</button><br />
+        <button style={{ margin: '7px', padding: '5px', background: 'red' }} onClick={removeStripManually}>remove strip manually</button><br />
+        <button style={{ margin: '7px', padding: '5px', background: 'red' }} onClick={removePage}>remove page</button><br />
+        <button style={{ margin: '7px', padding: '5px', background: 'red' }} onClick={removePageManually}>remove page manually</button><br />
+
+        <button style={{ margin: '7px', padding: '5px' }} onClick={getStripById}>get strip by id</button><br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={updateStrip}>update Strip</button><br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={reUseProjectPageStrip}>re-use project page strip</button><br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={deleteProjectPageStripFromOneParent}>delete strip </button><br />
+
+        <button style={{ margin: '7px', padding: '5px' }} onClick={test}>test</button><br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={test2}>test2</button><br />
+
+        ===================================================== VARIANT  =========================================   <br />
+
+        <button style={{ margin: '7px', padding: '5px', background: 'greenYellow' }} onClick={createNewVariant}>create new variant</button><br />
+        <button style={{ margin: '7px', padding: '5px', background: 'greenYellow' }} onClick={removeVariant}>remove Variant</button><br />
+
+
+        =====================================================  ============================================   <br />
+
 
         <button style={{ margin: '7px', padding: '5px' }} onClick={saveImageToGalleryWithGalleryNumber}>save image</button><br />
         <button style={{ margin: '7px', padding: '5px' }} onClick={removeImageFromRow}>remove Image</button><br />
         <button style={{ margin: '7px', padding: '5px' }} onClick={saveFileToRow}>save file to row</button><br />
 
+        =====================================================  DUPLICATE  =========================================   <br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={duplicatePage}>duplicate page</button><br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={duplicatePageStrip}>duplicate page strip</button><br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={duplicatePageStripComponent}>duplicate page strip component</button><br />
 
+        <button style={{ margin: '7px', padding: '5px' }} onClick={batchChangeIconCategory}>batch change icon category</button><br />
+
+        <button style={{ margin: '7px', padding: '5px' }} onClick={batchDeleteIcon}>batch delete icon</button><br />
+
+
+        <button style={{ margin: '7px', padding: '5px' }} onClick={createIconSet}>create icon set</button><br />
 
         <input id="inp" type="file" />
       </div>
-    </div>
+    </div >
   )
 }
 
