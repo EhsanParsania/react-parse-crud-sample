@@ -165,21 +165,7 @@ function SlProjectMock() {
       name: 'strip 6',
     })
   }
-  async function createStrip(strip: Strip, pageId: string) {
-    const projectPageStrip = new ProjectPageStrip();
-    projectPageStrip.set('name', strip.name);
-    // projectPageStrip.set('isSelected', strip.isSelected);
-    // projectPageStrip.set('layout', strip.layout);
-    // projectPageStrip.set('styling', strip.styling);
-    // projectPageStrip.set('order', strip.order);
-    const result = await projectPageStrip.save({
-      parents:[ {
-        projectPage: ProjectPage.createWithoutData(pageId),
-        order: strip.order
-      }]
-    });
-    return this.mapRawStrip(result.toJSON());
-  }
+
   const reUseProjectPageStrip = async () => {
     const result = await Parse.Cloud.run('re-use-project-page-strip', {
       stripId: 'Uhu4GirbYbjwDRB',
