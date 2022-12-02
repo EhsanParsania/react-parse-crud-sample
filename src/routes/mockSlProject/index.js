@@ -8,7 +8,8 @@ const ProjectPageStripComponent = Parse.Object.extend('ProjectPageStripComponent
 const Project = Parse.Object.extend('Project')
 
 function SlProjectMock() {
-
+  const inputRef = React.createRef()
+  const inputRef2 = React.createRef()
 
   const createNewRepositoryTable = async () => {
     const result = await Parse.Cloud.run('create-new-project-data-table', {
@@ -141,7 +142,7 @@ function SlProjectMock() {
   }
 
   const getTree = async () => {
-    const result = await Parse.Cloud.run('get-project-page-tree', { pageId: '1E8cxuGg5konmGB' })
+    const result = await Parse.Cloud.run('get-project-page-tree', { pageId: 'k2Ie8NqxGA0a0sH' })
     console.log(result)
   }
 
@@ -158,19 +159,31 @@ function SlProjectMock() {
 
   const createNewPageStrip = async () => {
     const projectPageStrip = new ProjectPageStrip()
-    const projectPage = ProjectPage.createWithoutData('DYJfkZwhdWPD6Gb')
+    const projectPage = ProjectPage.createWithoutData('HUEzXOlAWp1h28P')
     await projectPageStrip.save({
-      // parents: [{ projectPage, order: 1 }],
-      projectPage: projectPage,
+      parents: [{ projectPage, order: 1 }],
       name: 'strip 6',
-      order: 1,
     })
   }
-
+  async function createStrip(strip: Strip, pageId: string) {
+    const projectPageStrip = new ProjectPageStrip();
+    projectPageStrip.set('name', strip.name);
+    // projectPageStrip.set('isSelected', strip.isSelected);
+    // projectPageStrip.set('layout', strip.layout);
+    // projectPageStrip.set('styling', strip.styling);
+    // projectPageStrip.set('order', strip.order);
+    const result = await projectPageStrip.save({
+      parents:[ {
+        projectPage: ProjectPage.createWithoutData(pageId),
+        order: strip.order
+      }]
+    });
+    return this.mapRawStrip(result.toJSON());
+  }
   const reUseProjectPageStrip = async () => {
     const result = await Parse.Cloud.run('re-use-project-page-strip', {
-      stripId: 'Vv0XXguBezF1ab7',
-      newProjectPageParentId: 'DYJfkZwhdWPD6Gb',
+      stripId: 'Uhu4GirbYbjwDRB',
+      newProjectPageParentId: 'TsT1XX29A1WC018',
       newOrder: 2
     })
     console.log(result)
@@ -220,7 +233,7 @@ function SlProjectMock() {
     const projectPage = new ProjectPage()
     const page = await projectPage.save({
       name: 'page 1',
-      project: Project.createWithoutData('oLTgduuvCbdiuEb'),
+      project: Project.createWithoutData('SuCIkqEkUXvZwGG'),
       order: 3,
     })
 
@@ -272,7 +285,7 @@ function SlProjectMock() {
   }
 
   const removeStripManually = async () => {
-    const projectPageStrip = ProjectPageStrip.createWithoutData('StyU14WsqAIMyyv')
+    const projectPageStrip = ProjectPageStrip.createWithoutData('v0mMXEKlDd3KA08')
     await projectPageStrip.destroy()
   }
 
@@ -281,14 +294,14 @@ function SlProjectMock() {
   }
 
   const removePageManually = async () => {
-    const projectPage = ProjectPage.createWithoutData('GqoktoCoGh4L2Un')
+    const projectPage = ProjectPage.createWithoutData('xCojrmVjaxWjXRP')
     await projectPage.destroy()
   }
 
   // ============================================= VARIANT =============================================
 
   const createNewVariant = async () => {
-    const result = await Parse.Cloud.run('new-project-strip-variant', { stripId: '8TQWurOGwdsAmPD' })
+    const result = await Parse.Cloud.run('new-project-strip-variant', { stripId: 'SVxR5so1pnSAlZT' })
     console.log(result)
   }
 
@@ -301,17 +314,17 @@ function SlProjectMock() {
 
   const duplicatePage = async () => {
     const result = await Parse.Cloud.run('clone-project-page-tree', {
-      pageId: 'w4CqM6aNpUIsfJJ',
-      newPageOrder: 5,
+      pageId: 'Uhu4GirbYbjwDRB',
+      newPageOrder: 3,
     })
     console.log(result)
   }
 
   const duplicatePageStrip = async () => {
     const result = await Parse.Cloud.run('clone-page-strips-tree', {
-      stripId: '8TQWurOGwdsAmPD',
-      pageId: '9lxwPQCsewvKPBe',
-      newStripOrder: 1,
+      stripId: 'v0mMXEKlDd3KA08',
+      pageId: 'MU3EZhdoKFnz13q',
+      newStripOrder: 7,
     })
     console.log(result)
   }
@@ -367,6 +380,19 @@ function SlProjectMock() {
     const projectPageStripQuery = new Parse.Query(ProjectPageStrip)
     projectPageStripQuery.equalTo('parents.projectPage.objectId', 'DYJfkZwhdWPD6Gb')
     const result = await projectPageStripQuery.find()
+    console.log(result)
+  }
+
+  const updateIconColors = async () => {
+    // read from inputRef
+    const id = inputRef.current.value
+    const iconColors = inputRef2.current.value
+    const SVGColors = iconColors.match(/#[0-9a-fA-F]{3,8}/g);
+    console.log(SVGColors)
+    const result = await Parse.Cloud.run('update-icon-colors', {
+      iconId: id,
+      colors: SVGColors
+    })
     console.log(result)
   }
 
@@ -458,7 +484,15 @@ function SlProjectMock() {
 
         <button style={{ margin: '7px', padding: '5px' }} onClick={createIconSet}>create icon set</button><br />
 
-        <input id="inp" type="file" />
+        =====================================================  SVG  =========================================   <br />
+
+        <input type={'text'} style={{margin:'10px'}} ref={inputRef} /><br />
+        <textarea style={{margin:'10px', padding:'7px',minWidth:'500px'}} ref={inputRef2} /> <br />
+        <button style={{ margin: '10px', padding: '5px', background: 'linear-gradient(to right, #ff9966 0%, #ff4e62 100%)' }} onClick={updateIconColors}>updateIconColors</button><br />
+
+     
+        <br /> <br /> <br />
+        <br /> <br /> <br />
       </div>
     </div >
   )
