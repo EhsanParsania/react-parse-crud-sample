@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import Parse from 'parse'
+import base64Image from './base64Image.json'
 const ProjectDataTable = Parse.Object.extend('ProjectDataTable')
 const ProductGallery = Parse.Object.extend('ProductGallery')
 const ProjectPage = Parse.Object.extend('ProjectPage')
@@ -382,6 +383,13 @@ function SlProjectMock() {
     console.log(result)
   }
 
+  const updateUserAvatar = async () => {
+    const result = await Parse.Cloud.run('update-user-avatar', {
+      base64: base64Image.image, // required
+      mimeType: 'image/png'    // required     // eg: image/png
+    })
+    console.log(result)
+  }
 
 
   return (
@@ -477,6 +485,11 @@ function SlProjectMock() {
         <button style={{ margin: '10px', padding: '5px', background: 'linear-gradient(to right, #ff9966 0%, #ff4e62 100%)' }} onClick={updateIconColors}>updateIconColors</button><br />
 
      
+        =====================================================  UPDATE USER AVATAR============================================   <br />
+
+        <button style={{ margin: '7px', padding: '5px' }} onClick={updateUserAvatar}>update user avatar</button><br />
+
+
         <br /> <br /> <br />
         <br /> <br /> <br />
       </div>
