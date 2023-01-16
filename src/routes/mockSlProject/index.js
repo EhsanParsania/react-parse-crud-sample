@@ -398,6 +398,36 @@ function SlProjectMock() {
     console.log(result)
   }
 
+  const uploadBatchIcons = async () => {
+    const result = await Parse.Cloud.run('upload-batch-icons', {
+     icons:[
+      {
+        icon:{
+          name: "icon1",
+          svg: `<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>`
+        },
+        categories:['category1', 'category2'],
+        iconSetId: "InZV9hjvsv"
+      },
+      {
+        icon:{
+          name: "icon2",
+          svg: `<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>`
+        },
+        categories:['category1'],
+        iconSetId: "InZV9hjvsv"
+      }
+     ]
+    })
+    console.log(result)
+  }
+
+
+
 
   return (
     <div className="App" >
@@ -487,14 +517,21 @@ function SlProjectMock() {
 
         =====================================================  SVG  =========================================   <br />
 
-        <input type={'text'} style={{margin:'10px'}} ref={inputRef} /><br />
-        <textarea style={{margin:'10px', padding:'7px',minWidth:'500px'}} ref={inputRef2} /> <br />
+        <input type={'text'} style={{ margin: '10px' }} ref={inputRef} /><br />
+        <textarea style={{ margin: '10px', padding: '7px', minWidth: '500px' }} ref={inputRef2} /> <br />
         <button style={{ margin: '10px', padding: '5px', background: 'linear-gradient(to right, #ff9966 0%, #ff4e62 100%)' }} onClick={updateIconColors}>updateIconColors</button><br />
 
-     
+        =====================================================  GITHUB WEBHOOK  ============================================   <br />
+
+        <button style={{ margin: '7px', padding: '5px' }} onClick={callWebhook}>call github webhook</button><br />
+
         =====================================================  UPDATE USER AVATAR============================================   <br />
 
         <button style={{ margin: '7px', padding: '5px' }} onClick={updateUserAvatar}>update user avatar</button><br />
+
+        =====================================================  ICON ============================================   <br />
+
+        <button style={{ margin: '7px', padding: '5px' }} onClick={uploadBatchIcons}>upload batch icons</button><br />
 
 
         <br /> <br /> <br />
