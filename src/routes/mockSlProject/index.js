@@ -383,6 +383,13 @@ function SlProjectMock() {
     console.log(result)
   }
 
+  const callWebhook = async () => {
+    const result = await Parse.Cloud.run('github-webhook', {
+      payload: {}
+    })
+    console.log(result)
+  }
+
   const updateUserAvatar = async () => {
     const result = await Parse.Cloud.run('update-user-avatar', {
       base64: base64Image.image, // required
