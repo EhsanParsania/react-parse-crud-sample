@@ -14,7 +14,7 @@ function SlProjectMock() {
 
   const createNewRepositoryTable = async () => {
     const result = await Parse.Cloud.run('create-new-project-data-table', {
-      name: 'table number october 21-2',
+      name: 'may 18 table',
       fields: [
         { id: 'productTitle', name: "product", type: 'text' },
         { id: 'rating', name: "ratingoo", type: 'rating' },
@@ -36,9 +36,9 @@ function SlProjectMock() {
 
   const createNewProjectRow = async () => {
     const result = await Parse.Cloud.run('create-new-project-data-row', {
-      tableId: 'd9rGmSzuNEMYHWK',
+      tableId: 'y1ywg4xMEljJz9O',
       data: {
-        productTitle: "october 21-2",
+        productTitle: "may 18",
         rating: 2,
       },
 
@@ -151,19 +151,21 @@ function SlProjectMock() {
 
   const createNewPage = async () => {
     const projectPage = new ProjectPage()
-    const project = Project.createWithoutData('oLTgduuvCbdiuEb')
+    const project = Project.createWithoutData('yl3J4U142j')
     await projectPage.save({
       project: project,
-      name: 'page 1',
+      name: 'cascade 22',
     })
   }
 
   const createNewPageStrip = async () => {
     const projectPageStrip = new ProjectPageStrip()
-    const projectPage = ProjectPage.createWithoutData('HUEzXOlAWp1h28P')
+    const projectPage = ProjectPage.createWithoutData('o91mnvuxw5UmK5d')
     await projectPageStrip.save({
-      parents: [{ projectPage, order: 1 }],
-      name: 'strip 6',
+      // parents: [{ projectPage, order: 1 }],
+      name: 'cascade 22',
+      projectPage: projectPage,
+
     })
   }
 
@@ -194,8 +196,8 @@ function SlProjectMock() {
 
   const createNewPageStripComponent = async () => {
     const projectPageStripComponent = new ProjectPageStripComponent()
-    const projectPageStrip = ProjectPageStrip.createWithoutData('UOElPXOa7CsunFf')
-    // const projectPageStripComponent2 = ProjectPageStripComponent.createWithoutData('Xn5j7xJNPrstB0I')
+    const projectPageStrip = ProjectPageStrip.createWithoutData('09wBmsdDzkXF936')
+    // const projectPageStripComponent2 = ProjectPageStripComponent.createWithoutData('09wBmsdDzkXF936')
 
     await projectPageStripComponent.save({
       projectPageStrip: { parent1: projectPageStrip, order1: 1 },
@@ -219,15 +221,15 @@ function SlProjectMock() {
   const createNewPageStripComponentWithChildren = async () => {
     const projectPage = new ProjectPage()
     const page = await projectPage.save({
-      name: 'page 1',
-      project: Project.createWithoutData('SuCIkqEkUXvZwGG'),
+      name: 'cascade 21',
+      project: Project.createWithoutData('cGOb4Zucjj'),
       order: 3,
     })
 
 
     const projectPageStrip = new ProjectPageStrip()
     const strip = await projectPageStrip.save({
-      name: 'front 1',
+      name: 'front 1 21',
       parents: [{ projectPage: page, order: 1 }],
       // newStripOrder: 1
     })
@@ -239,20 +241,20 @@ function SlProjectMock() {
 
     const res1 = await projectPageStripComponent.save({
       projectPageStrip: strip,
-      name: 'component with strip parent',
+      name: 'component with strip parent 21',
       // projectPageStripComponent: projectPageStripComponent2
     })
     // const projectPageStrip = ProjectPageStrip.createWithoutData('RvpSxDtn5ThCjBu')
     const projectPageStripComponent2 = new ProjectPageStripComponent()
 
     const res2 = await projectPageStripComponent2.save({
-      name: 'component with component parent 2',
+      name: 'component with component parent 2 21',
       projectPageStripComponent: res1
     })
     const projectPageStripComponent3 = new ProjectPageStripComponent()
 
     const res3 = await projectPageStripComponent3.save({
-      name: 'component with component parent 3',
+      name: 'component with component parent 3 21',
       projectPageStripComponent: res2
     })
 
@@ -426,6 +428,39 @@ function SlProjectMock() {
     console.log(result)
   }
 
+  const  createNewProjectDataRow = async () => {
+    const result = await Parse.Cloud.run('create-new-project-data-row', {
+      data: [[{id: 1}]],
+      groupId: "VBvVOQR3m1pVGqH",
+      groupOwner: true,
+      tableId: "VBvVOQR3m1pVGqH",
+    })
+    console.log(result)
+  }
+
+  const removeIconSet = async () => {
+    const IconSet = Parse.Object.extend('IconSet')
+    const iconSet = IconSet.createWithoutData('M9CNHOxJIB')
+    const result = await iconSet.destroy()
+    console.log(result)
+  }
+
+  const removeProject = async () => {
+    const Project = Parse.Object.extend('Project')
+    const project = Project.createWithoutData('HVt86xadta')
+    const result = await project.destroy()
+    console.log(result)
+  }
+
+  const removeUser = async () => {
+    // const user = Parse.User.current()
+    // const result = await user.destroy()
+    // console.log(result)
+
+    const result = await Parse.Cloud.run('delete-account')
+    console.log(result)
+  }
+
 
 
 
@@ -532,6 +567,16 @@ function SlProjectMock() {
         =====================================================  ICON ============================================   <br />
 
         <button style={{ margin: '7px', padding: '5px' }} onClick={uploadBatchIcons}>upload batch icons</button><br />
+
+        =====================================================   ============================================   <br />
+
+        <button style={{ margin: '7px', padding: '5px' }} onClick={createNewProjectDataRow}>createNewProjectDataRow</button><br />
+
+        ===================================================== cascade deleting  ============================================   <br />
+
+        <button style={{ margin: '7px', padding: '5px' }} onClick={removeIconSet}>removeIconSet</button><br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={removeProject}>removeProject</button><br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={removeUser}>removeUser</button><br />
 
 
         <br /> <br /> <br />
