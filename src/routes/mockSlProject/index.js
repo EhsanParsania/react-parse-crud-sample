@@ -475,6 +475,14 @@ function SlProjectMock() {
     })
     console.log(result)
   }
+  
+  const changeName = async () => {
+    const user = Parse.User.current()
+    console.log(user)
+    user.set('displayName', 'new name1')
+    const result = await user.save()
+    console.log(result)
+  }
 
 
   return (
@@ -596,6 +604,10 @@ function SlProjectMock() {
 
         <button style={{ margin: '7px', padding: '5px' }} onClick={generateGoogleLoginUrl}>generateGoogleLoginUrl</button><br />
         <button style={{ margin: '7px', padding: '5px' }} onClick={googleLogin}>googleLogin</button><br />
+
+        ===================================================== edit user ============================================   <br />
+
+        <button style={{ margin: '7px', padding: '5px' }} onClick={changeName}>editUser</button><br />
 
 
         <br /> <br /> <br />
