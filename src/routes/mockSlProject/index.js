@@ -479,6 +479,7 @@ function SlProjectMock() {
   const changeName = async () => {
     const user = Parse.User.current()
     console.log(user)
+    user.set('email', 'new-email@test.com')
     user.set('displayName', 'new name1')
     const result = await user.save()
     console.log(result)
