@@ -485,6 +485,16 @@ function SlProjectMock() {
     console.log(result)
   }
 
+  const testLinkWith = async () => {
+    let session = await Parse.User.logInWith('microsoft', {
+      authData: {
+        code: "",
+        redirect_uri: "http://localhost:3000/microsoft"
+      },
+    });
+    console.log(session)
+  }
+
 
   return (
     <div className="App" >
@@ -609,6 +619,11 @@ function SlProjectMock() {
         ===================================================== edit user ============================================   <br />
 
         <button style={{ margin: '7px', padding: '5px' }} onClick={changeName}>editUser</button><br />
+
+        ===================================================== test link with ============================================   <br />
+
+        <button style={{ margin: '7px', padding: '5px' }} onClick={() => testLinkWith()}>test link with</button><br />
+
 
 
         <br /> <br /> <br />
