@@ -96,6 +96,11 @@ const Auth = () => {
         <span onClick={toggleIsRegistering}>{toggleRegisterText}</span>
         <button type="submit">{authActiontext}</button>
       </form>
+
+      <button onClick={generateGoogleLoginUrl}>Generate Google Login Url</button>
+      <button onClick={googleLogin}>Google Login</button>
+      <button onClick={exportCode}>Export Code</button>
+
     </div>
   );
 };
