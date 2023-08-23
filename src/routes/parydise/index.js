@@ -3,8 +3,8 @@ import Parse from 'parse'
 
 function Parydise() {
   const spotifyInsecureLinkWith = async () => {
-    const id = '317bpe5rftsbe2iyik4pylgkegmu'
-    const access_token = 'BQDWWNGY6UclbtbXU6HZrXfp45EbVsAaI_aZtuzupDkdY1KmuzDtSWAZOrujuYnLqeV-W6gmUW8U4EvMWo1aGn5cqTc8ScoXTltQ64b68lZEJ7tEk7koUFLk7VpStObLXH-N5xlM0uBlbyG2ymZbpbsHct5i8dDgvLXcDigyH1MhmUXtXy-MaSPPn-oKqVSC6fEY0luxdoFYz8z8h9pZk-LQgA'
+    const id = 'xxxxxxx'
+    const access_token = '-xxxxxxxx-LQgA'
     const spotifyAuthData = {
       id,
       access_token
