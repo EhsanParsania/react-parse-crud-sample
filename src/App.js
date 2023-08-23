@@ -7,6 +7,7 @@ import {
 import Home from './routes/Home';
 import Auth from './routes/Auth';
 import SlProjectMock from './routes/mockSlProject';
+import Parydise from './routes/parydise';
 
 export default function App() {
 
@@ -19,6 +20,9 @@ export default function App() {
         </Route>
         <Route path="/sl">
           <SlProjectMock />
+        </Route>
+        <Route path="/parydise">
+          <Parydise />
         </Route>
         <Route path="/">
           <Home />

@@ -462,20 +462,20 @@ function SlProjectMock() {
   }
 
   const generateGoogleLoginUrl = async () => {
-    const result = await Parse.Cloud.run('generate-google-login-url', {
-      redirect_uri: 'http://127.0.0.1:3000/sl'
+    const result = await Parse.Cloud.run('generate-google-login-uri', {
+      redirect_uri: 'https://sluice.nl'
     })
     console.log(result)
   }
 
   const googleLogin = async () => {
     const result = await Parse.Cloud.run('google-login', {
-      idToken:
-        'eyJhbGciOiJSUzI1NiIsImt'
+      code:
+        '4%xxxx'
     })
     console.log(result)
   }
-  
+
   const changeName = async () => {
     const user = Parse.User.current()
     console.log(user)
@@ -495,6 +495,19 @@ function SlProjectMock() {
     console.log(session)
   }
 
+  const testLinkWith2 = async () => {
+    // post req to this url 
+    let session = await Parse.User.logInWith('twitter', {
+        "authData": {
+            "auth_token":"xxxx",
+            "auth_token_secret":"xxxx",
+            "id": "1234",
+            "consumer_key": "xxxx",
+            "consumer_secret":"xxxx"
+         }
+    });
+    console.log(session)
+  }
 
   return (
     <div className="App" >
@@ -623,6 +636,7 @@ function SlProjectMock() {
         ===================================================== test link with ============================================   <br />
 
         <button style={{ margin: '7px', padding: '5px' }} onClick={() => testLinkWith()}>test link with</button><br />
+        <button style={{ margin: '7px', padding: '5px' }} onClick={() => testLinkWith2()}>test link twitter</button><br />
 
 
 

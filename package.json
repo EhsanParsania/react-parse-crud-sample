@@ -20,6 +20,10 @@
     "start:sluice:dev": "dotenv -e .env.local.sluice.dev react-scripts start",
     "start:sluice:prod": "dotenv -e .env.local.sluice.prod react-scripts start",
     "start:evolve:dev": "dotenv -e .env.local.evolve.dev react-scripts start",
+    "start:twitter": "dotenv -e .env.local.twitter react-scripts start",
+    "start:localdev": "dotenv -e .env.local.dev react-scripts start",
+    "start:test": "dotenv -e .env.ehsan-69-test react-scripts start",
+    "start:parydise": "dotenv -e .env.parydise react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
